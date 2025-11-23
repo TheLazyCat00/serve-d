@@ -146,6 +146,28 @@ Hover provideHover(TextDocumentPositionParams params)
 	{
 	}
 
+	// Fallback: if no documentation and no declaration, try to get raw definition from DCD
+	if (marked.length == 0)
+	{
+		try
+		{
+			auto completions = dcd.listCompletion(document.rawText,
+					cast(int) document.positionToBytes(params.position)).getYield;
+			if (completions.type == DCDCompletions.Type.identifiers && completions.identifiers.length > 0)
+			{
+				// Use the first identifier's definition as fallback
+				auto identifier = completions.identifiers[0];
+				if (identifier.definition.length > 0)
+				{
+					marked = [MarkedString(identifier.definition, "d")];
+				}
+			}
+		}
+		catch (Exception e)
+		{
+		}
+	}
+
 	Hover ret;
 	ret.contents = marked;
 	return ret;
