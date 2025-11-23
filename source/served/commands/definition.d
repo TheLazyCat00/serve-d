@@ -11,6 +11,7 @@ import workspaced.coms;
 import std.experimental.logger;
 import std.path : buildPath, isAbsolute;
 import std.string;
+import std.algorithm : any;
 
 import fs = std.file;
 import io = std.stdio;
@@ -147,7 +148,9 @@ Hover provideHover(TextDocumentPositionParams params)
 	}
 
 	// Fallback: if no documentation and no declaration, try to get raw definition from DCD
-	if (marked.length == 0)
+	// Check if marked is empty or contains only empty strings
+	bool hasContent = marked.length > 0 && marked.any!(m => m.value.strip.length > 0);
+	if (!hasContent)
 	{
 		try
 		{
