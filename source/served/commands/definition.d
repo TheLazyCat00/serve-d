@@ -148,8 +148,8 @@ Hover provideHover(TextDocumentPositionParams params)
 	}
 
 	// Fallback: if no documentation and no declaration, try to get raw definition from DCD
-	// Check if marked is empty or contains only empty strings
-	bool hasContent = marked.length > 0 && marked.any!(m => m.value.strip.length > 0);
+	// Check if marked contains any non-empty content
+	bool hasContent = marked.any!(m => m.value.strip.length > 0);
 	if (!hasContent)
 	{
 		try
