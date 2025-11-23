@@ -155,7 +155,8 @@ Hover provideHover(TextDocumentPositionParams params)
 					cast(int) document.positionToBytes(params.position)).getYield;
 			if (completions.type == DCDCompletions.Type.identifiers && completions.identifiers.length > 0)
 			{
-				// Use the first identifier's definition as fallback
+				// DCD returns identifiers at cursor position. Use the first one as it's the most relevant
+				// (typically the symbol directly under the cursor)
 				auto identifier = completions.identifiers[0];
 				if (identifier.definition.length > 0)
 				{
