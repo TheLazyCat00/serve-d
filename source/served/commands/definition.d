@@ -160,11 +160,13 @@ Hover provideHover(TextDocumentPositionParams params)
 				if (identifier.definition.length > 0)
 				{
 					marked = [MarkedString(identifier.definition, "d")];
+					trace("Using fallback definition for hover: ", identifier.definition);
 				}
 			}
 		}
 		catch (Exception e)
 		{
+			trace("Failed to get fallback definition for hover: ", e.msg);
 		}
 	}
 
